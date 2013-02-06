@@ -1,6 +1,6 @@
 #include <php.h>
-
 #include "rtvhw.h"
+#include "cultist.h"
 
 zend_function_entry rtvhw_functions[] = {
   PHP_FE(rtvcopy, NULL)
@@ -12,7 +12,7 @@ zend_module_entry rtvhw_module_entry = {
   STANDARD_MODULE_HEADER,
   PHP_RTVHW_EXTNAME,
   rtvhw_functions,
-  NULL,
+  PHP_MINIT(rtvhw),
   NULL,
   NULL,
   NULL,
@@ -20,6 +20,10 @@ zend_module_entry rtvhw_module_entry = {
   PHP_RTVHW_VERSION,
   STANDARD_MODULE_PROPERTIES
 };
+
+PHP_MINIT_FUNCTION(rtvhw) {
+  rtvhw_init_rtvtemplate(TSRMLS_C);
+}
 
 ZEND_GET_MODULE(rtvhw)
 

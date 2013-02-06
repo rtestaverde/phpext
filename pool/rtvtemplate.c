@@ -8,7 +8,7 @@ static function_entry rtvtemplate_methods[] = {
 	{NULL,NULL,NULL}
 };
 
-void rtv_init_rtvtemplate(TSRMLS_D){ 
+void rtvhw_init_rtvtemplate(TSRMLS_D){ 
 	zend_class_entry ce;
 
 	INIT_CLASS_ENTRY(ce,"RtvTemplate",rtvtemplate_methods);
