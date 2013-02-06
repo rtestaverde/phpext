@@ -1,6 +1,6 @@
 #include <php.h>
 #include "rtvhw.h"
-#include "cultist.h"
+#include "rtvtemplate.h"
 
 zend_function_entry rtvhw_functions[] = {
   PHP_FE(rtvcopy, NULL)
