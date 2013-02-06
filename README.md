@@ -1,49 +1,83 @@
-Case study for a php extension 1. compiling a version of PHP to enabling debug support 2. configuring Apache to work whith different versions of PHP 
-3. compiling first php extension 1. Compilign a version of PHP to enabling debug support The very first step is to obtain a debuggable working copy 
-of PHP. So the target of this thread is to leave different versions of PHP working togheter (and whithout conflicts) on the same (linux) machine. 
+Case study for a php extension 
+
+1. compiling a version of PHP to enabling debug support 
+2. configuring Apache to work whith different versions of PHP 
+3. compiling first php extension 
+
+
+1. Compilign a version of PHP to enabling debug support 
+
+The very first step is to obtain a debuggable working copy of PHP. 
+So the target of this thread is to leave different versions of PHP working togheter (and whithout conflicts) 
+on the same (linux) machine. 
 Notes for environment:
- - Linux ubuntu32 3.2.0-26-generic-pae i386 (virtualbox)
- - PHP used in this development 5.3.21
- - Apache/2.2.22 (Ubuntu) Feb 13 2012 01:37:27
- 
+
+- Linux ubuntu32 3.2.0-26-generic-pae i386 (virtualbox)
+- PHP used in this development 5.3.21
+- Apache/2.2.22 (Ubuntu) Feb 13 2012 01:37:27
+
 Make a directory and move to it (wherever you want)
+
 	$ mkdir php53 && cd php53 Download a PHP source package
-	$ wget http://www.php.net/get/php-5.3.21.tar.gz/from/es2.php.net/mirror Untar [and delete source package] and move to it
+	$ wget http://www.php.net/get/php-5.3.21.tar.gz/from/es2.php.net/mirror
+
+Untar [and delete source package] and move to it
+
 	$ tar -xvf php-5.3.21.tar.gz
 	[$ rm php-5.3.21.tar.gz]
-	$ cd php-5.3.21/ Create a directory to compile the source
-	$ mkdir debug-zts Create an environment variable to handle the development only for this shell session (leaving eventually others 
+	$ cd php-5.3.21/ 
+
+Create a directory to compile the source
+
+	$ mkdir debug-zts 
+
+Create an environment variable to handle the development only for this shell session (leaving eventually others 
 installations free of make their's job)
-	$ PHPDEV=$(pwd); Run the configure command whith the options to enable the debug support, whith optionally other ones to compile extensions, 
-and run install (if no errors)
+
+	$ PHPDEV=$(pwd); 
+
+Run the configure command whith the options to enable the debug support, whith optionally other ones to compile extensions, and run install (if no errors)
+
 	$ ./configure --enable-debug --enable-maintainer-zts --prefix=$PHPDEV/debug-zts [ more options ]
 	$ make
-	$ make install Now you have the php5.3.21 installed in the $PHPDEV/debug-zts directory, and the executable in $PHPDEV/debug-zts/bin 
+	$ make install
+
+Now you have the php5.3.21 installed in the $PHPDEV/debug-zts directory, and the executable in $PHPDEV/debug-zts/bin 
 directory. Now save the executable path into a file to easy reload it and, very important, add this to your PATH
+
 	$ echo $PHPDEV/debug-zts/bin>phpdev
 	$ PATH=$(cat phpdev):$PATH
- Next time you need to start development session use the last command to restore the PATH.
- Test your PHP installation
+
+Next time you need to start development session use the last command to restore the PATH.
+Test your PHP installation
 	$ php -v
 	PHP 5.3.21 (cli) (built: Feb 5 2013 12:58:28) (DEBUG)
 	Copyright (c) 1997-2013 The PHP Group
-	Zend Engine v2.3.0, Copyright (c) 1998-2013 Zend Technologies 2. Configuring Apache to work whith different versions of PHP The easiest way 
-is to configure various virtualhosts to use different PHP environment. To mantain a consistent environment, I use the same directory of the download 
-in this example php53, so add a directory to store the virtualhost
+	Zend Engine v2.3.0, Copyright (c) 1998-2013 Zend Technologies 
+
+2. Configuring Apache to work whith different versions of PHP 
+The easiest way is to configure various virtualhosts to use different PHP environment. To mantain a consistent environment, I use the same directory of the download in this example php53, so add a directory to store the virtualhost
+
 	$ cd ~/php53 && mkdir www && cd www
-	$ mkdir html && mkdir logs The html directory will be your root dir, and the logs your error and access logs dir. Create a file in the www 
-dir called php.conf whith this content [replacing the paths as in your installation]
+	$ mkdir html && mkdir logs
+
+The html directory will be your root dir, and the logs your error and access logs dir. Create a file in the www dir called php.conf whith this content [replacing the paths as in your installation]
+
 	-------------- BOF php.conf
 	ScriptAlias /cgi-bin-php/ "[YOUR_PATH]/php53/php-5.3.21/debug-zts/bin/"
 	SetEnv PHP_INI_SCAN_DIR "[YOUR_PATH]/php53/www/"
 	AddHandler php-script .php
 	Action php-script /cgi-bin-php/php-cgi
 	<FilesMatch "\.php">
-			SetHandler php-script
+		SetHandler php-script
 	</FilesMatch>
-	-------------- EOF php.conf In this file you say to Apache where is the PHP executable you want to load, and where will found the php.ini 
-file for this virtualhost. Create a virtualhost, you need root priviledges. First create the file in /etc/apache2/sites-available eg php53debug, 
+	-------------- EOF php.conf 
+
+In this file you say to Apache where is the PHP executable you want to load, and where will found the php.ini 
+file for this virtualhost. 
+Create a virtualhost, you need root priviledges. First create the file in /etc/apache2/sites-available eg php53debug, 
 changing the paths as into your installation
+
 	-------------- BOF /etc/apache2/sites-available/php53debug
 	<VirtualHost *:80>
 		ServerAdmin [your@email.ltd]
@@ -58,37 +92,56 @@ changing the paths as into your installation
 			AllowOverride All
 		</Directory>
 		<Directory [YOUR_PATH]/php53/www/html>
-				Options Indexes FollowSymLinks MultiViews
-				AllowOverride All
-				Order allow,deny
-				allow from all
-        </Directory>
+			Options Indexes FollowSymLinks MultiViews
+			AllowOverride All
+			Order allow,deny
+			allow from all
+		</Directory>
 	</VirtualHost>
-	-------------- EOF /etc/apache2/sites-available/php53debug Feel free to change this settings at your will, the only important thing is the 
-inclusion of the php.conf file. Enable the virtualhost and restart Apache
+	-------------- EOF /etc/apache2/sites-available/php53debug 
+
+Feel free to change this settings at your will, the only important thing is the inclusion of the php.conf file. Enable the virtualhost and restart Apache
+
 	$ sudo a2ensite php53debug
-	$ sudo service apache2 restart Create a php.ini file (from scratch or copying an existing one) in the ~/php53/www/ directory (or wherever you 
-point the PHO_INI_SCAN_DIR in the php.conf file. At this time I need only the date.timezone parameter to be configured, so I create a php.ini file 
-whith only a line
+	$ sudo service apache2 restart 
+
+Create a php.ini file (from scratch or copying an existing one) in the ~/php53/www/ directory (or wherever you point the PHO_INI_SCAN_DIR in the php.conf file.
+
+At this time I need only the date.timezone parameter to be configured, so I create a php.ini file whith only a line
+
 	-------------- BOF ~/php53/www/php.ini
 	date.timezone [YOUR_TIMEZONE eg Europe/Madrid]
-	-------------- EOF ~/php53/www/php.ini Create a file in html dir whith the phpinfo() statement:
+	-------------- EOF ~/php53/www/php.ini 
+
+Create a file in html dir whith the phpinfo() statement:
+
 	-------------- BOF [YOUR_PATH]/php53/www/html/info.php
 	<?php
 		phpinfo();
-	-------------- EOF [YOUR_PATH]/php53/www/html/info.php At this point calling your virtualhost/info.php from a browser will show the php 
-configuration for this installation whithout conficts whith other eventual PHP instances. 3. Compiling first php extension This repository is 
-organized in branches to get a step by step tutorial. First of all verify your path points to the correct PHP version, you need to do this step every 
-time you start a development session to ensure whith which version are you working. It's very important don't forget it.
+	-------------- EOF [YOUR_PATH]/php53/www/html/info.php
+	
+At this point calling your virtualhost/info.php from a browser will show the php configuration for this installation whithout conficts whith other eventual PHP instances.
+
+3. Compiling first php extension 
+
+This repository is organized in branches to get a step by step tutorial. First of all verify your path points to the correct PHP version, you need to do this step every time you start a development session to ensure whith which version are you working. It's very important don't forget it.
+
 	$ cd ~/php53
 	$ echo $PATH eventually
-	$ PATH=$(phpdev):$PATH Create a directory in which make your development
+	$ PATH=$(phpdev):$PATH 
+
+Create a directory in which make your development
 	$ mkdir pool && cd pool Download the branch you wish to work on
-	$ git checkout git://github.com/rtestaverde/phpext.git Create a directory for the compilation
+	$ git checkout git://github.com/rtestaverde/phpext.git 
+
+Create a directory for the compilation
+
 	$ mkdir dev [modify and] copy the files into the dev directory
 	$ cp ./*.* dev/
-	$ cd dev/ Run the phpize command to create the structure of the headers and files you need to compile your extension, in my environment I 
-have phpize5, so I'll use it:
+	$ cd dev/ 
+
+Run the phpize command to create the structure of the headers and files you need to compile your extension, in my environment I have phpize5, so I'll use it:
+
 	$ phpize5
 	Configuring for:
 	PHP Api Version: 20090626
@@ -101,5 +154,7 @@ have phpize5, so I'll use it:
 	run-tests.php [the extensions source files] Run compile and make and make install
 	$ ./compile
 	$ make
-	$ make install The extension is build and copied in your extension dir (it will put where). Enable the extesion in your php.ini file. Finally 
-call the info.php whith the browser to see your installed and working extension.
+	$ make install 
+
+The extension is build and copied in your extension dir (it will put where). 
+Enable the extesion in your php.ini file. Finally call the info.php whith the browser to see your installed and working extension.
