@@ -6,8 +6,8 @@ Case study for a php extension
 
 
 1. Compilign a version of PHP to enabling debug support 
-
-The very first step is to obtain a debuggable working copy of PHP. 
+-------------------------------------------------------
+The very first step is to obtain a **debuggable** working copy of PHP. 
 So the target of this thread is to leave different versions of PHP working togheter (and whithout conflicts) 
 on the same (linux) machine. 
 Notes for environment:
@@ -56,6 +56,7 @@ Test your PHP installation
 	Zend Engine v2.3.0, Copyright (c) 1998-2013 Zend Technologies 
 
 2. Configuring Apache to work whith different versions of PHP 
+-------------------------------------------------------------
 The easiest way is to configure various virtualhosts to use different PHP environment. To mantain a consistent environment, I use the same directory of the download in this example php53, so add a directory to store the virtualhost
 
 	$ cd ~/php53 && mkdir www && cd www
@@ -123,6 +124,7 @@ Create a file in html dir whith the phpinfo() statement:
 At this point calling your virtualhost/info.php from a browser will show the php configuration for this installation whithout conficts whith other eventual PHP instances.
 
 3. Compiling first php extension 
+--------------------------------
 
 This repository is organized in branches to get a step by step tutorial. First of all verify your path points to the correct PHP version, you need to do this step every time you start a development session to ensure whith which version are you working. It's very important don't forget it.
 
@@ -148,10 +150,11 @@ Run the phpize command to create the structure of the headers and files you need
 	Zend Module Api No: 20090626
 	Zend Extension Api No: 220090626
 	$ ls
-	acinclude.m4 autom4te.cache config.guess configure
-	install-sh Makefile.global mkinstalldirs aclocal.m4 build config.h.in
-	config.sub configure.in ltmain.sh missing
-	run-tests.php [the extensions source files] Run compile and make and make install
+	acinclude.m4 autom4te.cache config.guess configure install-sh Makefile.global mkinstalldirs aclocal.m4 build config.h.in
+	config.sub configure.in ltmain.sh [b]missing[/b] run-tests.php [the extensions source files] 
+
+Run compile and make and make install
+
 	$ ./compile
 	$ make
 	$ make install 
