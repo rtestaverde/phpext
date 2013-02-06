@@ -18,7 +18,10 @@ Notes for environment:
 
 Make a directory and move to it (wherever you want)
 ```bash
-	$ mkdir php53 && cd php53 Download a PHP source package
+	$ mkdir php53 && cd php53 
+```
+Download a PHP source package
+```bash
 	$ wget http://www.php.net/get/php-5.3.21.tar.gz/from/es2.php.net/mirror
 ```
 Untar [and delete source package] and move to it
