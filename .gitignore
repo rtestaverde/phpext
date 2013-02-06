@@ -1,0 +1,3 @@
+pool/dev/
+www/logs/*.log
+php-5.3.21
