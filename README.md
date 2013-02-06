@@ -156,8 +156,31 @@ Run the phpize command to create the structure of the headers and files you need
 Run compile and make and make install
 ```bash
 	$ ./compile
+	[...various output...]
 	$ make
+	[...various output...]
+	----------------------------------------------------------------------
+	Libraries have been installed in:
+   		[YOUR_PATH]/php53/pool/dev/modules
+   	If you ever happen to want to link against installed libraries
+	in a given directory, LIBDIR, you must either use libtool, and
+	specify the full pathname of the library, or use the `-LLIBDIR'
+	flag during linking and do at least one of the following:
+		- add LIBDIR to the `LD_LIBRARY_PATH' environment variable during execution
+		- add LIBDIR to the `LD_RUN_PATH' environment variable during linking
+		- use the `-Wl,-rpath -Wl,LIBDIR' linker flag
+		- have your system administrator add LIBDIR to `/etc/ld.so.conf'
+	See any operating system documentation about shared libraries for
+	more information, such as the ld(1) and ld.so(8) manual pages.
+	----------------------------------------------------------------------
+	
+	Build complete.
+	Don't forget to run 'make test'.
+	
 	$ make install 
+	Installing shared extensions:     [YOUR_PATH]/php53/php-5.3.21/debug-zts/lib/php/extensions/debug-zts-20090626/
+
 ```
+
 The extension is build and copied in your extension dir (it will put where). 
 Enable the extesion in your php.ini file. Finally call the info.php whith the browser to see your installed and working extension.
