@@ -4,6 +4,8 @@
 zend_class_entry *rtv_ce_rtvtemplate;
 
 static function_entry rtvtemplate_methods[] = {
+	PHP_ME(RtvTemplate,__construct, NULL, ZEND_ACC_PUBLIC|ZEND_ACC_CTOR)
+	PHP_ME(RtvTemplate, getInstance, NULL, ZEND_ACC_PUBLIC|ZEND_ACC_STATIC)
 	PHP_ME(RtvTemplate, render, NULL, ZEND_ACC_PUBLIC)
 	{NULL,NULL,NULL}
 };
@@ -16,6 +18,22 @@ void rtvhw_init_rtvtemplate(TSRMLS_D){
 
 	/* fields */
 	zend_declare_property_bool(rtv_ce_rtvtemplate,"html", strlen("html"),1,ZEND_ACC_PUBLIC TSRMLS_CC);
+}
+
+PHP_METHOD(RtvTemplate, __construct){
+	char *name;
+	long heat = 10, sanity = 4;
+	if(zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC, "s|ll",&name,&name_len,&healt,&sanity)==FAILURE){
+		return;
+	}
+	zend_update_property_stringl(rtv_ce_rtvtemplate,getThis(),"name",strlen("name"),name, name_len TSRMLS_CC);
+	zend_update_property_long(rtv_ce_rtvtemplate,getThis(),"healt",strlen("healt"),healt TSRMLS_CC);
+	zend_update_property_long(rtv_ce_rtvtemplate,getThis(), "sanity", strlen("sanity"),sanity TSRMLS_CC);
+}
+
+PHP_METHOD(RtvTemplate, getInstance){
+	object_init_ex(return_value,rtv_ce_rtvtemplate);
+	CALL_METHOD(RtvTemplate, __construct, return_value, return_value);
 }
 
 PHP_METHOD(RtvTemplate, render){
