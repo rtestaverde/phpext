@@ -8,7 +8,7 @@ Case study for a php extension
 1. Compilign a version of PHP to enabling debug support 
 ---
 The very first step is to obtain a **debuggable** working copy of PHP. 
-So the target of this thread is to leave different versions of PHP working togheter (and whithout conflicts) 
+So the target of this thread is to leave different versions of PHP working togheter (and without conflicts) 
 on the same (linux) machine. 
 Notes for environment:
 
@@ -66,7 +66,7 @@ The easiest way is to configure various virtualhosts to use different PHP enviro
 	$ cd ~/php53 && mkdir www && cd www
 	$ mkdir html && mkdir logs
 ```
-The html directory will be your root dir, and the logs your error and access logs dir. Create a file in the www dir called php.conf whith this content [replacing the paths as in your installation]
+The html directory will be your root dir, and the logs your error and access logs dir. Create a file in the www dir called php.conf whith this content [replacing the paths as in your installation], notes that you need the apache module actions installed
 ```apache
 	ScriptAlias /cgi-bin-php/ "[YOUR_PATH]/php53/php-5.3.21/debug-zts/bin/"
 	SetEnv PHP_INI_SCAN_DIR "[YOUR_PATH]/php53/www/"
@@ -123,7 +123,7 @@ Create a file in html dir whith the phpinfo() statement:
 		phpinfo();
 ```
 	
-At this point calling your virtualhost/info.php from a browser will show the php configuration for this installation whithout conficts whith other eventual PHP instances.
+At this point calling your virtualhost/info.php from a browser will show the php configuration for this installation without conficts whith other eventual PHP instances.
 
 3. Compiling first php extension 
 ---
