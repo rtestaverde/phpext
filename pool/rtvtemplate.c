@@ -26,7 +26,7 @@ PHP_METHOD(RtvTemplate, __construct){
 	char *name;
 	int name_len;
 	
-	long heat = 10, sanity = 4;
+	long healt = 10, sanity = 4;
 	
 	if(zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC, "s|ll",&name,&name_len,&healt,&sanity)==FAILURE){
 		return;
