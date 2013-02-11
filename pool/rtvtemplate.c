@@ -39,7 +39,7 @@ PHP_METHOD(RtvTemplate, __construct){
 
 PHP_METHOD(RtvTemplate, getInstance){
 	object_init_ex(return_value,rtv_ce_rtvtemplate);
-	CALL_METHOD1(RtvTemplate, __construct, return_value, return_value, thisptr, 'alibaba');
+	CALL_METHOD1(RtvTemplate, __construct, return_value, return_value, 'alibaba');
 }
 
 PHP_METHOD(RtvTemplate, render){
