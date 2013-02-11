@@ -38,19 +38,8 @@ PHP_METHOD(RtvTemplate, __construct){
 }
 
 PHP_METHOD(RtvTemplate, getInstance){
-	char *name;
-	int name_len;
-	
-	long healt= 10, sanity = 4;
-	
-	php_printf(ZEND_NUM_ARGS());
-	
-	if(sent_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC, "s||ll", &name, &name_len,&healt,&sanity)==FAILURE){
-		php_printf('<br>returning<br>');
-		return;
-	}
 	object_init_ex(return_value,rtv_ce_rtvtemplate);
-	CALL_METHOD(RtvTemplate, __construct, return_value, return_value);
+	CALL_METHOD1(RtvTemplate, __construct, return_value, return_value, thisptr, 'alibaba');
 }
 
 PHP_METHOD(RtvTemplate, render){
