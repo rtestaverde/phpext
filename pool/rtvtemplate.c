@@ -28,7 +28,7 @@ PHP_METHOD(RtvTemplate, __construct){
 	
 	long healt = 10, sanity = 4;
 	
-	if(zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC, "|sll",&name,&name_len,&healt,&sanity)==FAILURE){
+	if(zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC, "s|ll",&name,&name_len,&healt,&sanity)==FAILURE){
 		return;
 	}
 	
