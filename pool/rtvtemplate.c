@@ -28,7 +28,7 @@ PHP_METHOD(RtvTemplate, __construct){
 	
 	long healt = 10, sanity = 4;
 	
-	if(zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC, "s|ll",&name,&name_len,&healt,&sanity)==FAILURE){
+	if(zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC, "|sll",&name,&name_len,&healt,&sanity)==FAILURE){
 		return;
 	}
 	
@@ -38,11 +38,9 @@ PHP_METHOD(RtvTemplate, __construct){
 }
 
 PHP_METHOD(RtvTemplate, getInstance){
-	php_printf('maldito sea');
-	return;
 	object_init_ex(return_value,rtv_ce_rtvtemplate);
-	//CALL_METHOD1(classname, name, retval, thisptr, param1)
-	CALL_METHOD3(RtvTemplate, __construct, return_value, return_value, 'alibaba',15,27);
+	CALL_METHOD(RtvTemplate, __construct, return_value, return_value);
+	//CALL_METHOD3(RtvTemplate, __construct, return_value, return_value,'alibaba',15,27);
 }
 
 PHP_METHOD(RtvTemplate, render){
