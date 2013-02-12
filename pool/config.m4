@@ -1,4 +1,4 @@
-PHP_ARG_ENABLE(rtvhw, whether to enable RtvHW extension, [  --enable-rtwhw   Enable RtvHW extension])
+PHP_ARG_ENABLE(rtvhw, whether to enable RtvHW extension, [  --enable-rtvhw   Enable RtvHW extension])
 
 if test "$PHP_RTVHW" != "no"; then
 
