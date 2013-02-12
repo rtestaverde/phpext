@@ -3,10 +3,16 @@
 #include "rtvhw.h"
 #include "rtvtemplate.h"
 
+ZEND_BEGIN_ARG_INFO_EX(arginfo_construct,0,0,3)
+	ZEND_ARG_INFO(0,name)
+	ZEND_ARG_INFO(0,healt)
+	ZEND_ARG_INFO(0,sanity)
+ZEND_END_ARG_INFO()
+
 zend_class_entry *rtv_ce_rtvtemplate;
 
 static function_entry rtvtemplate_methods[] = {
-	PHP_ME(RtvTemplate,__construct, NULL, ZEND_ACC_PUBLIC|ZEND_ACC_CTOR)
+	PHP_ME(RtvTemplate,__construct, arginfo_construct, ZEND_ACC_PUBLIC|ZEND_ACC_CTOR)
 	PHP_ME(RtvTemplate, getInstance, NULL, ZEND_ACC_PUBLIC|ZEND_ACC_STATIC)
 	PHP_ME(RtvTemplate, render, NULL, ZEND_ACC_PUBLIC)
 	{NULL,NULL,NULL}
