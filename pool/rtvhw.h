@@ -1,21 +1,22 @@
 #define PHP_RTVHW_EXTNAME "rtvhw"
-#define PHP_RTVHW_VERSION "0.21"
+#define PHP_RTVHW_VERSION "0.33"
 PHP_MINIT_FUNCTION(rtvhw);
 PHP_FUNCTION(rtvcopy);
 PHP_FUNCTION(rtvwelcome);
 
 
+
 #define PUSH_PARAM(arg) zend_vm_stack_push(arg TSRMLS_CC)
-#define POP_PARAM() (void)zend_vm_stac_pop(TSRMLS_C)
+#define POP_PARAM() (void)zend_vm_stack_pop(TSRMLS_C)
 #define PUSH_EO_PARAM()
 #define POP_EO_PARAM()
 
-#define CALL_METHOD_BASE(classname,name)zim_##classname##_##name
+#define CALL_METHOD_BASE(classname, name) zim_##classname##_##name
 
-#define CALL_METHOD_HELPER(classname,name,retval,thisptr,num,param) \
-PUSH_PARAM(param);PUSH_PARAM((void*) num);\
+#define CALL_METHOD_HELPER(classname, name, retval, thisptr, num, param) \
+PUSH_PARAM(param); PUSH_PARAM((void*)num); \
 PUSH_EO_PARAM(); \
-CALL_METHOD_BASE(classname,name)(num,retval,NULL,thisptr,0 TSRMLS_CC); \
+CALL_METHOD_BASE(classname, name)(num, retval, NULL, thisptr, 0 TSRMLS_CC); \
 POP_EO_PARAM(); \
 POP_PARAM(); POP_PARAM();
 
