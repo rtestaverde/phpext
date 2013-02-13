@@ -36,16 +36,17 @@ zend_object_value create_rtv_template_fragments(zend_class_entry *class_type TSR
 	rtv_template_fragments *intern;
 	zval *tmp;
 	
-	intern = (rtv_template_fragmetns *)emalloc(sizeof(rtv_template_fragments));
+	intern = (rtv_template_fragments*)emalloc(sizeof(rtv_template_fragments));
 	memset(intern,0,sizeof(rtv_template_fragments));
-	zend_object_std_init(&intern->std.properties, &class_type->default_properties,(copy_ctor_func_t) zval_add_ref,(void*) &tmp, sizeof(zval *));
-	retval.handle = zend_object_store_put(intern,(zend_objects_store_dtor_t) zend_object_destroy_object, free_rtv_template_fragments, NULL TSRMLS_CC);
-	retval.handlers = send_get_std_object_handlers();
+	zend_object_std_init(&intern->std, class_type TSRMLS_CC);
+	zend_hash_copy(intern->std.properties, &class_type->default_properties,(copy_ctor_func_t) zval_add_ref,(void*) &tmp, sizeof(zval *));
+	retval.handle = zend_objects_store_put(intern,(zend_objects_store_dtor_t) zend_object_destroy_object, free_rtv_template_fragments, NULL TSRMLS_CC);
+	retval.handlers = zend_get_std_object_handlers();
 	
 	return retval;
 }
 
-void free_rtv_template_fragments(void *object TSRLMLS_DC){
+void free_rtv_template_fragments(void *object TSRMLS_DC){
 	rtv_template_fragments *fragments =(rtv_template_fragments*) object;
 	if(fragments->code){
 		efree(fragments->code);

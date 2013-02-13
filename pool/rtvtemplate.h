@@ -8,7 +8,7 @@ typedef struct _rtv_template_fragments{
 } rtv_template_fragments;
 
 zend_object_value create_rtv_template_fragments(zend_class_entry *class_type TSRMLS_DC);
-void free_rtv_template_fragments(void * object TSRLMLS_DC);
+void free_rtv_template_fragments(void *object TSRMLS_DC);
 
 void rtv_init_rtvtemplate(TSRMLS_D);
 
