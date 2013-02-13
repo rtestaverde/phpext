@@ -22,7 +22,7 @@ zend_module_entry rtvhw_module_entry = {
 };
 
 PHP_MINIT_FUNCTION(rtvhw) {
-  rtvhw_init_rtvtemplate(TSRMLS_C);
+  rtv_init_rtvtemplate(TSRMLS_C);
 }
 
 ZEND_GET_MODULE(rtvhw)

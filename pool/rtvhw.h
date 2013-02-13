@@ -1,5 +1,5 @@
 #define PHP_RTVHW_EXTNAME "rtvhw"
-#define PHP_RTVHW_VERSION "0.11"
+#define PHP_RTVHW_VERSION "0.21"
 PHP_MINIT_FUNCTION(rtvhw);
 PHP_FUNCTION(rtvcopy);
 PHP_FUNCTION(rtvwelcome);
