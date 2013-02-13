@@ -24,10 +24,33 @@ void rtv_init_rtvtemplate(TSRMLS_D){
 	zend_class_entry ce;
 
 	INIT_CLASS_ENTRY(ce,"RtvTemplate",rtvtemplate_methods);
+	ce.create_object = create_rtv_template_fragments;
 	rtv_ce_rtvtemplate = zend_register_internal_class(&ce TSRMLS_CC);
 
 	/* fields */
 	zend_declare_property_bool(rtv_ce_rtvtemplate,"html", strlen("html"),1,ZEND_ACC_PUBLIC TSRMLS_CC);
+}
+
+zend_object_value create_rtv_template_fragments(zend_class_entry *class_type TSRMLS_DC){
+	zend_object_value retval;
+	rtv_template_fragments *intern;
+	zval *tmp;
+	
+	intern = (rtv_template_fragmetns *)emalloc(sizeof(rtv_template_fragments));
+	memset(intern,0,sizeof(rtv_template_fragments));
+	zend_object_std_init(&intern->std.properties, &class_type->default_properties,(copy_ctor_func_t) zval_add_ref,(void*) &tmp, sizeof(zval *));
+	retval.handle = zend_object_store_put(intern,(zend_objects_store_dtor_t) zend_object_destroy_object, free_rtv_template_fragments, NULL TSRMLS_CC);
+	retval.handlers = send_get_std_object_handlers();
+	
+	return retval;
+}
+
+void free_rtv_template_fragments(void *object TSRLMLS_DC){
+	rtv_template_fragments *fragments =(rtv_template_fragments*) object;
+	if(fragments->code){
+		efree(fragments->code);
+	}
+	efree(fragments);
 }
 
 PHP_METHOD(RtvTemplate, __construct){
@@ -69,3 +92,14 @@ PHP_METHOD(RtvTemplate, render){
 	php_printf(test);
 	php_printf("</h1>");
 }
+
+/**
+	* Method to retryve the code of a fragment
+	* @TODO index param to retry
+	* @RETURN string fragment
+ */
+ PHP_METHOD(RtvTemplate, getFragment){
+	rtv_template_fragments *fragments;
+	fragments = (rtv_template_fragments*)zend_object_store_get_object(getThis() TSRLMLS_CC);
+	RETURN_STRINGl((char*)fragments->code,1);
+ }
