@@ -40,7 +40,7 @@ zend_object_value create_rtv_template_fragments(zend_class_entry *class_type TSR
 	memset(intern,0,sizeof(rtv_template_fragments));
 	zend_object_std_init(&intern->std, class_type TSRMLS_CC);
 	zend_hash_copy(intern->std.properties, &class_type->default_properties,(copy_ctor_func_t) zval_add_ref,(void*) &tmp, sizeof(zval *));
-	retval.handle = zend_objects_store_put(intern,(zend_objects_store_dtor_t) zend_object_destroy_object, free_rtv_template_fragments, NULL TSRMLS_CC);
+	retval.handle = zend_objects_store_put(intern,(zend_objects_store_dtor_t) zend_objects_destroy_object, free_rtv_template_fragments, NULL TSRMLS_CC);
 	retval.handlers = zend_get_std_object_handlers();
 	
 	return retval;
@@ -71,7 +71,7 @@ PHP_METHOD(RtvTemplate, __construct){
 
 PHP_METHOD(RtvTemplate, getInstance){
 	char *name="default name";
-	int name_len= sizeof("default name"-1);
+	int name_len= sizeof("default name")-1;
 	long healt=22, sanity=22;
 	object_init_ex(return_value,rtv_ce_rtvtemplate);
 	if(zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC, "|sll",&name,&name_len,&healt,&sanity)==FAILURE){
@@ -85,7 +85,7 @@ PHP_METHOD(RtvTemplate, getInstance){
 PHP_METHOD(RtvTemplate, render){
 	char *test="testo di default";
 	int test_len = sizeof("testo di default")-1;
-	 if(zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC, "|sll",&test,&test_len)==FAILURE){
+	 if(zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC, "|s",&test,&test_len)==FAILURE){
                 return;
         }
 
@@ -101,6 +101,6 @@ PHP_METHOD(RtvTemplate, render){
  */
  PHP_METHOD(RtvTemplate, getFragment){
 	rtv_template_fragments *fragments;
-	fragments = (rtv_template_fragments*)zend_object_store_get_object(getThis() TSRLMLS_CC);
-	RETURN_STRINGl((char*)fragments->code,1);
+	fragments = (rtv_template_fragments*)zend_object_store_get_object(getThis() TSRMLS_CC);
+	RETURN_STRING((char*)fragments->code,1);
  }
