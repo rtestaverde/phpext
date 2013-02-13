@@ -54,8 +54,14 @@ void free_rtv_template_fragments(void *object TSRMLS_DC){
 	efree(fragments);
 }
 
+/**
+	 * Constructor
+	 * @param string name, name of the template optional default dummy
+	 * @param long healt, healt of the template optional default 10
+	 * @param long sanity, sanity of the template optional default 4
+*/
 PHP_METHOD(RtvTemplate, __construct){
-	char *name = "v";
+	char *name = "dummy";
 	int name_len = sizeof("v")-1;
 
 	long healt = 10, sanity = 4;
@@ -69,6 +75,7 @@ PHP_METHOD(RtvTemplate, __construct){
 	zend_update_property_long(rtv_ce_rtvtemplate,getThis(), "sanity", strlen("sanity"),sanity TSRMLS_CC);
 }
 
+
 PHP_METHOD(RtvTemplate, getInstance){
 	char *name="default name";
 	int name_len= sizeof("default name")-1;
@@ -77,9 +84,13 @@ PHP_METHOD(RtvTemplate, getInstance){
 	if(zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC, "|sll",&name,&name_len,&healt,&sanity)==FAILURE){
                 return;
         }
-	add_property_stringl(return_value, "name", name, name_len, 1);
+	CALL_METHOD1(RtvTemplate, __construct, return_value, return_value,name);
+	/* add_property_stringl(return_value, "name", name, name_len, 1);
 	add_property_long(return_value,"healt",healt);
-	add_property_long(return_value,"sanity",sanity);
+	add_property_long(return_value,"sanity",sanity); 
+	zend_update_property_stringl(rtv_ce_rtvtemplate,return_value,"name",strlen("name"),name, name_len TSRMLS_CC);
+	zend_update_property_long(rtv_ce_rtvtemplate,return_value,"healt",strlen("healt"),healt TSRMLS_CC);
+	zend_update_property_long(rtv_ce_rtvtemplate,return_value, "sanity", strlen("sanity"),sanity TSRMLS_CC);*/
 }
 
 PHP_METHOD(RtvTemplate, render){
@@ -96,8 +107,8 @@ PHP_METHOD(RtvTemplate, render){
 
 /**
 	* Method to retryve the code of a fragment
-	* @TODO index param to retry
-	* @RETURN string fragment
+	* @todo index param to retry
+	* @return string fragment
  */
  PHP_METHOD(RtvTemplate, getFragment){
 	rtv_template_fragments *fragments;

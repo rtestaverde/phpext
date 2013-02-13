@@ -5,8 +5,8 @@ PHP_FUNCTION(rtvcopy);
 PHP_FUNCTION(rtvwelcome);
 
 
-#define PUSH_PARAM(arg) zend_vm_push(arg TSRMLS_CC)
-#define POP_PARAM() (void)zend_vm_stac_pop_(TSRMLS_C)
+#define PUSH_PARAM(arg) zend_vm_stack_push(arg TSRMLS_CC)
+#define POP_PARAM() (void)zend_vm_stac_pop(TSRMLS_C)
 #define PUSH_EO_PARAM()
 #define POP_EO_PARAM()
 
